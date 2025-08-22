@@ -1,11 +1,13 @@
 import streamlit as st
 import sqlite3
+import datetime
+
 
 # -------------------------------
 # Database Initialization
 # -------------------------------
 DB_FILE = "my_kitchen.db"
-
+d
 def init_db():
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
@@ -216,7 +218,7 @@ st.set_page_config(page_title="My Kitchen", layout="wide")
 # -------------------------------
 tab = st.sidebar.radio(
     "🍴 My Kitchen Navigation",
-    ["🍲 What Can I Cook?", "📚 Dish Library", "🥫 Pantry", "🛒 Shopping", "➕ Add Dishes", "✏️ Edit Dishes"]
+    ["🍲 What Can I Cook?", "📚 Dish Library", "🥫 Pantry", "🛒 Shopping", "➕ Add Dishes", "✏️ Edit Dishes", "⚙️ Settings"]
 )
 
 # -------------------------------
@@ -712,3 +714,28 @@ elif tab == "✏️ Edit Dishes":
         # Remove from local list to update dropdown without rerun
         dishes = [d for d in dishes if d["id"] != dish["id"]]
         dish_names = [d["name"] for d in dishes]
+
+
+#SETTINGS TAB
+
+if tab == "⚙️ Settings":
+    st.header("⚙️ Settings & Backup")
+
+    st.subheader("Export Data Backup")
+    st.write("Download a backup of your SQLite database.")
+
+    # Generate filename with date and time
+    now = datetime.datetime.now()
+    timestamp = now.strftime("%Y%m%d_%H%M%S")
+    backup_filename = f"my_kitchen_backup_{timestamp}.db"
+
+    # Export DB button
+    with open(DB_FILE, "rb") as f:
+        db_bytes = f.read()
+
+    st.download_button(
+        label="💾 Download DB Backup",
+        data=db_bytes,
+        file_name=backup_filename,
+        mime="application/octet-stream"
+    )
