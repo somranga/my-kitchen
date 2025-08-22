@@ -7,7 +7,7 @@ import datetime
 # Database Initialization
 # -------------------------------
 DB_FILE = "my_kitchen.db"
-d
+
 def init_db():
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
